@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
-import { Animated } from 'react-native';
+import { Animated, Text } from 'react-native';
 
 export default class Label extends PureComponent {
   static defaultProps = {
@@ -28,6 +28,7 @@ export default class Label extends PureComponent {
     errorColor: PropTypes.string.isRequired,
 
     animationDuration: PropTypes.number.isRequired,
+    useNativeDriver: PropTypes.bool,
 
     style: Animated.Text.propTypes.style,
 
@@ -39,22 +40,23 @@ export default class Label extends PureComponent {
 
   constructor(props) {
     super(props);
-
+    const {basePadding} = props
     this.state = {
       input: new Animated.Value(this.inputState()),
       focus: new Animated.Value(this.focusState()),
+      w: 0
     };
   }
 
   componentWillReceiveProps(props) {
     let { focus, input } = this.state;
-    let { active, focused, errored, animationDuration: duration } = this.props;
+    let { active, focused, errored, animationDuration: duration, useNativeDriver } = this.props;
 
     if (focused ^ props.focused || active ^ props.active) {
       let toValue = this.inputState(props);
 
       Animated
-        .timing(input, { toValue, duration })
+        .timing(input, { toValue, duration, useNativeDriver })
         .start();
     }
 
@@ -62,8 +64,16 @@ export default class Label extends PureComponent {
       let toValue = this.focusState(props);
 
       Animated
-        .timing(focus, { toValue, duration })
-        .start();
+        .timing(focus, { toValue, duration, useNativeDriver })
+        .start(() => {
+          // if(this.container){
+          //   this.container.measure((x, y, width, height, pageX, pageY) => {
+          //     if (x !== pageX) {
+          //       this.setState({x: pageX})
+          //     }
+          //   })
+          // }
+        });
     }
   }
 
@@ -75,8 +85,16 @@ export default class Label extends PureComponent {
     return errored? -1 : (focused? 1 : 0);
   }
 
+  onLayout = (e) => {
+    if(this.container){
+      this.container.measure((x, y, width, height, pageX, pageY) => {
+        this.setState({w: width})
+      })
+    }
+  }
+
   render() {
-    let { focus, input } = this.state;
+    let { input, w } = this.state;
     let {
       children,
       restricted,
@@ -89,46 +107,72 @@ export default class Label extends PureComponent {
       basePadding,
       style,
       errored,
-      active, 
+      active,
       focused,
       animationDuration,
+      useNativeDriver,
       ...props
     } = this.props;
 
-    let color = restricted?
+    let color = restricted ?
       errorColor:
-      focus.interpolate({
-        inputRange: [-1, 0, 1],
-        outputRange: [errorColor, baseColor, tintColor],
-      });
+      (focused ? (errored ? errorColor : tintColor): baseColor )
 
-    let top = input.interpolate({
+    let translateY = input.interpolate({
       inputRange: [0, 1],
       outputRange: [
         baseSize + fontSize * 0.25,
-        baseSize - basePadding - activeFontSize,
+        baseSize - basePadding - activeFontSize - fontSize * 0.25,
       ],
     });
 
-    let textStyle = {
-      fontSize: input.interpolate({
-        inputRange: [0, 1],
-        outputRange: [fontSize, activeFontSize],
-      }),
+    let translateX = input.interpolate({
+      inputRange: [0, 1],
+      outputRange: [
+        0,
+        (w * activeFontSize/fontSize - w) / 2,
+      ],
+    });
 
+    let scaleY = input.interpolate({
+      inputRange: [0, 1],
+      outputRange: [1, activeFontSize/fontSize],
+    });
+
+    let scaleX = input.interpolate({
+      inputRange: [0, 1],
+      outputRange: [1, activeFontSize/fontSize],
+    });
+
+    let textStyle = {
+      fontSize,
       color,
     };
 
     let containerStyle = {
       position: 'absolute',
-      top,
+      transform: [
+        { translateY },
+        { scaleY },
+        { scaleX },
+      ],
     };
 
+    // if (focused) {
+    //   containerStyle.transform.push({ translateX })
+    // }
+    containerStyle.transform.push({ translateX })
+
+    const childrenElement = (typeof children === 'string') ?
+      children :
+      React.cloneElement(children, {style: {color}})
     return (
-      <Animated.View style={containerStyle}>
-        <Animated.Text style={[style, textStyle]} {...props}>
-          {children}
-        </Animated.Text>
+      <Animated.View
+        style={containerStyle}
+      >
+        <Text onLayout={this.onLayout} ref={o => this.container = o} style={[style, textStyle]} {...props}>
+          {childrenElement}
+        </Text>
       </Animated.View>
     );
   }

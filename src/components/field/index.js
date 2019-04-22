@@ -29,6 +29,7 @@ export default class TextField extends PureComponent {
     editable: true,
 
     animationDuration: 225,
+    useNativeDriver: true,
 
     fontSize: 16,
     titleFontSize: 12,
@@ -55,6 +56,7 @@ export default class TextField extends PureComponent {
     ...TextInput.propTypes,
 
     animationDuration: PropTypes.number,
+    useNativeDriver: PropTypes.bool,
 
     fontSize: PropTypes.number,
     titleFontSize: PropTypes.number,
@@ -112,7 +114,7 @@ export default class TextField extends PureComponent {
 
     this.mounted = false;
     this.state = {
-      text: value,
+      text: value ? value : '',
 
       focus: new Animated.Value(this.focusState(error, false)),
       focused: false,
@@ -164,6 +166,10 @@ export default class TextField extends PureComponent {
 
   updateRef(name, ref) {
     this[name] = ref;
+  }
+
+  setNativeProps(props) {
+    this.input.setNativeProps(props);
   }
 
   focusState(error, focused) {
@@ -335,6 +341,7 @@ export default class TextField extends PureComponent {
       disabledLineType,
       disabledLineWidth,
       animationDuration,
+      useNativeDriver,
       fontSize,
       titleFontSize,
       labelFontSize,
@@ -490,6 +497,7 @@ export default class TextField extends PureComponent {
       baseColor,
       errorColor,
       animationDuration,
+      useNativeDriver,
       active,
       focused,
       errored,
