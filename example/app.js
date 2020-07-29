@@ -1,22 +1,45 @@
 import React, { Component } from 'react';
-import { AppRegistry, ScrollView, View } from 'react-native';
+import {
+  AppRegistry,
+  ScrollView,
+  View,
+  SafeAreaView,
+  Platform,
+} from 'react-native';
 import { RaisedTextButton } from 'react-native-material-buttons';
 import { TextField } from 'react-native-material-textfield';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 let styles = {
   scroll: {
-    backgroundColor: '#E8EAF6',
+    backgroundColor: 'transparent',
   },
 
   container: {
     margin: 8,
-    marginTop: 24,
+    marginTop: Platform.select({ ios: 8, android: 32 }),
+    flex: 1,
   },
 
   contentContainer: {
     padding: 8,
   },
+
+  buttonContainer: {
+    paddingTop: 8,
+    margin: 8,
+  },
+
+  safeContainer: {
+    flex: 1,
+    backgroundColor: '#E8EAF6',
+  },
+};
+
+let defaults = {
+  firstname: 'Eddard',
+  lastname: 'Stark',
+  about: 'Stoic, dutiful, and honorable man, considered to embody the values of the North',
 };
 
 export default function init() {
@@ -39,14 +62,13 @@ export default function init() {
       this.aboutRef = this.updateRef.bind(this, 'about');
       this.emailRef = this.updateRef.bind(this, 'email');
       this.passwordRef = this.updateRef.bind(this, 'password');
+      this.houseRef = this.updateRef.bind(this, 'house');
 
       this.renderPasswordAccessory = this.renderPasswordAccessory.bind(this);
 
       this.state = {
-        firstname: 'Eddard',
-        lastname: 'Stark',
-        about: 'Stoic, dutiful, and honorable man, considered to embody the values of the North',
         secureTextEntry: true,
+        ...defaults,
       };
     }
 
@@ -134,113 +156,119 @@ export default function init() {
           name={name}
           color={TextField.defaultProps.baseColor}
           onPress={this.onAccessoryPress}
-          suppressHighlighting
+          suppressHighlighting={true}
         />
       );
     }
 
     render() {
       let { errors = {}, secureTextEntry, ...data } = this.state;
-      let { firstname = 'name', lastname = 'house' } = data;
+      let { firstname, lastname } = data;
 
-      let defaultEmail = `${firstname}@${lastname}.com`
+      let defaultEmail = `${firstname || 'name'}@${lastname || 'house'}.com`
         .replace(/\s+/g, '_')
         .toLowerCase();
 
       return (
-        <ScrollView
-          style={styles.scroll}
-          contentContainerStyle={styles.contentContainer}
-          keyboardShouldPersistTaps='handled'
-        >
-          <View style={styles.container}>
-            <TextField
-              ref={this.firstnameRef}
-              value={data.firstname}
-              autoCorrect={false}
-              enablesReturnKeyAutomatically={true}
-              onFocus={this.onFocus}
-              onChangeText={this.onChangeText}
-              onSubmitEditing={this.onSubmitFirstName}
-              returnKeyType='next'
-              label='First Name'
-              error={errors.firstname}
-            />
+        <SafeAreaView style={styles.safeContainer}>
+          <ScrollView
+            style={styles.scroll}
+            contentContainerStyle={styles.contentContainer}
+            keyboardShouldPersistTaps='handled'
+          >
+            <View style={styles.container}>
+              <TextField
+                ref={this.firstnameRef}
+                value={defaults.firstname}
+                autoCorrect={false}
+                enablesReturnKeyAutomatically={true}
+                onFocus={this.onFocus}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={this.onSubmitFirstName}
+                returnKeyType='next'
+                label='First Name'
+                error={errors.firstname}
+              />
 
-            <TextField
-              ref={this.lastnameRef}
-              value={data.lastname}
-              autoCorrect={false}
-              enablesReturnKeyAutomatically={true}
-              onFocus={this.onFocus}
-              onChangeText={this.onChangeText}
-              onSubmitEditing={this.onSubmitLastName}
-              returnKeyType='next'
-              label='Last Name'
-              error={errors.lastname}
-            />
+              <TextField
+                ref={this.lastnameRef}
+                value={defaults.lastname}
+                autoCorrect={false}
+                enablesReturnKeyAutomatically={true}
+                onFocus={this.onFocus}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={this.onSubmitLastName}
+                returnKeyType='next'
+                label='Last Name'
+                error={errors.lastname}
+              />
 
-            <TextField
-              ref={this.aboutRef}
-              value={data.about}
-              onFocus={this.onFocus}
-              onChangeText={this.onChangeText}
-              onSubmitEditing={this.onSubmitAbout}
-              returnKeyType='next'
-              multiline={true}
-              blurOnSubmit={true}
-              label='About (optional)'
-              characterRestriction={140}
-            />
+              <TextField
+                ref={this.aboutRef}
+                value={defaults.about}
+                onFocus={this.onFocus}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={this.onSubmitAbout}
+                returnKeyType='next'
+                multiline={true}
+                blurOnSubmit={true}
+                label='About (optional)'
+                characterRestriction={140}
+              />
 
-            <TextField
-              ref={this.emailRef}
-              value={data.email}
-              defaultValue={defaultEmail}
-              keyboardType='email-address'
-              autoCapitalize='none'
-              autoCorrect={false}
-              enablesReturnKeyAutomatically={true}
-              onFocus={this.onFocus}
-              onChangeText={this.onChangeText}
-              onSubmitEditing={this.onSubmitEmail}
-              returnKeyType='next'
-              label='Email Address'
-              error={errors.email}
-            />
+              <TextField
+                ref={this.emailRef}
+                defaultValue={defaultEmail}
+                keyboardType='email-address'
+                autoCapitalize='none'
+                autoCorrect={false}
+                enablesReturnKeyAutomatically={true}
+                onFocus={this.onFocus}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={this.onSubmitEmail}
+                returnKeyType='next'
+                label='Email Address'
+                error={errors.email}
+              />
 
-            <TextField
-              ref={this.passwordRef}
-              value={data.password}
-              secureTextEntry={secureTextEntry}
-              autoCapitalize='none'
-              autoCorrect={false}
-              enablesReturnKeyAutomatically={true}
-              clearTextOnFocus={true}
-              onFocus={this.onFocus}
-              onChangeText={this.onChangeText}
-              onSubmitEditing={this.onSubmitPassword}
-              returnKeyType='done'
-              label='Password'
-              error={errors.password}
-              title='Choose wisely'
-              maxLength={30}
-              characterRestriction={20}
-              renderAccessory={this.renderPasswordAccessory}
-            />
+              <TextField
+                ref={this.passwordRef}
+                secureTextEntry={secureTextEntry}
+                autoCapitalize='none'
+                autoCorrect={false}
+                enablesReturnKeyAutomatically={true}
+                clearTextOnFocus={true}
+                onFocus={this.onFocus}
+                onChangeText={this.onChangeText}
+                onSubmitEditing={this.onSubmitPassword}
+                returnKeyType='done'
+                label='Password'
+                error={errors.password}
+                title='Choose wisely'
+                maxLength={30}
+                characterRestriction={20}
+                renderRightAccessory={this.renderPasswordAccessory}
+              />
 
-            <TextField
-              value={data.lastname}
-              label='House'
-              title='Derived from last name'
-              disabled={true}
-            />
-          </View>
+              <TextField
+                ref={this.houseRef}
+                defaultValue={data.lastname}
+                label='House'
+                title='Derived from last name'
+                disabled={true}
+              />
+            </View>
 
-          <View style={styles.container}>
-            <RaisedTextButton onPress={this.onSubmit} title='submit' color={TextField.defaultProps.tintColor} titleColor='white' />
-          </View>
-        </ScrollView>
+            <View style={styles.buttonContainer}>
+              <RaisedTextButton
+                onPress={this.onSubmit}
+                title='submit'
+                color={TextField.defaultProps.tintColor}
+                titleColor='white'
+              />
+            </View>
+          </ScrollView>
+        </SafeAreaView>
       );
     }
   }
