@@ -9,6 +9,7 @@ import {
   Platform,
   ViewPropTypes,
 } from 'react-native';
+import BottomRightLabel from '../bottomRightLabel';
 
 import Line from '../line';
 import Label from '../label';
@@ -96,6 +97,7 @@ export default class TextField extends PureComponent {
     title: PropTypes.string,
 
     characterRestriction: PropTypes.number,
+    bottomRightText: PropTypes.string,
 
     error: PropTypes.string,
     errorColor: PropTypes.string,
@@ -108,6 +110,7 @@ export default class TextField extends PureComponent {
     disabledLineType: Line.propTypes.lineType,
 
     disabled: PropTypes.bool,
+    onPressRightTitle: PropTypes.func,
 
     formatText: PropTypes.func,
 
@@ -565,6 +568,8 @@ export default class TextField extends PureComponent {
       errorColor,
       titleTextStyle: style,
       characterRestriction: limit,
+      bottomRightText: rightTitle,
+      onPressRightTitle: onPress,
     } = this.props;
 
     let { length: count } = this.value();
@@ -596,10 +601,17 @@ export default class TextField extends PureComponent {
       focusAnimation,
     };
 
+    let bottomRightProps = {
+      ...styleProps,
+      onPress,
+      title: rightTitle,
+    };
+
     return (
       <View style={[styles.helperContainer, containerStyle]}>
         <Helper {...helperProps} />
         <Counter {...counterProps} />
+        <BottomRightLabel {...bottomRightProps} />
       </View>
     );
   }
