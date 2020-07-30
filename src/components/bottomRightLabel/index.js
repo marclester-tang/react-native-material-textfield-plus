@@ -16,15 +16,15 @@ export default class Counter extends PureComponent {
 	};
 
 	render() {
-		let { title, style, onPress } = this.props;
+		let { rightTitle, onPress, rightTextStyle } = this.props;
 
-		if (!title) {
+		if (!rightTitle) {
 			return null;
 		}
 
 		return (
-			<Text onPress={onPress} style={[styles.text, style]}>
-				{title}
+			<Text onPress={onPress} style={[styles.text, rightTextStyle]}>
+				{rightTitle}
 			</Text>
 		);
 	}

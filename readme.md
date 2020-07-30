@@ -113,6 +113,9 @@ class Example extends Component {
  labelTextStyle        | Style for label inner Text component        |   Object | -
  titleTextStyle        | Style for title inner Text component        |   Object | -
  affixTextStyle        | Style for affix inner Text component        |   Object | -
+ bottomRightText       | Text field bottom right label (same position with character counter |   String | -
+ onPressRightText      | Button function for bottom right label      | Function | -
+ bottomLabelStyle      | Container style for bottom text (error/text)|   Object | -
  formatText            | Input mask callback                         | Function | -
  renderLeftAccessory   | Render left input accessory view            | Function | -
  renderRightAccessory  | Render right input accessory view           | Function | -

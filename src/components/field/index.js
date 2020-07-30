@@ -110,7 +110,7 @@ export default class TextField extends PureComponent {
     disabledLineType: Line.propTypes.lineType,
 
     disabled: PropTypes.bool,
-    onPressRightTitle: PropTypes.func,
+    onPressRightText: PropTypes.func,
 
     formatText: PropTypes.func,
 
@@ -122,6 +122,7 @@ export default class TextField extends PureComponent {
 
     containerStyle: (ViewPropTypes || View.propTypes).style,
     inputContainerStyle: (ViewPropTypes || View.propTypes).style,
+    bottomLabelStyle: (ViewPropTypes || View.propTypes).style,
   };
 
   static inputContainerStyle = styles.inputContainer;
@@ -567,9 +568,11 @@ export default class TextField extends PureComponent {
       baseColor,
       errorColor,
       titleTextStyle: style,
+      rightTextStyle,
       characterRestriction: limit,
       bottomRightText: rightTitle,
-      onPressRightTitle: onPress,
+      onPressRightText: onPress,
+      bottomLabelStyle,
     } = this.props;
 
     let { length: count } = this.value();
@@ -605,10 +608,11 @@ export default class TextField extends PureComponent {
       ...styleProps,
       onPress,
       title: rightTitle,
+      rightTextStyle: { ...style, ...rightTextStyle },
     };
 
     return (
-      <View style={[styles.helperContainer, containerStyle]}>
+      <View style={[styles.helperContainer, containerStyle, bottomLabelStyle]}>
         <Helper {...helperProps} />
         <Counter {...counterProps} />
         <BottomRightLabel {...bottomRightProps} />
