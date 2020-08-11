@@ -99,7 +99,7 @@ export default class TextField extends PureComponent {
     characterRestriction: PropTypes.number,
     bottomRightText: PropTypes.string,
 
-    error: PropTypes.string,
+    error: PropTypes.any,
     errorColor: PropTypes.string,
 
     lineWidth: PropTypes.number,
@@ -613,9 +613,9 @@ export default class TextField extends PureComponent {
 
     return (
       <View style={[styles.helperContainer, containerStyle, bottomLabelStyle]}>
-        <Helper {...helperProps} />
-        <Counter {...counterProps} />
-        <BottomRightLabel {...bottomRightProps} />
+        {!!title || !!error && <Helper {...helperProps} />}
+        {!!count && <Counter {...counterProps} />}
+        {!!rightTitle && <BottomRightLabel {...bottomRightProps} />}
       </View>
     );
   }
