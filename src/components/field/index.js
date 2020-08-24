@@ -573,6 +573,7 @@ export default class TextField extends PureComponent {
       bottomRightText: rightTitle,
       onPressRightText: onPress,
       bottomLabelStyle,
+      lineContainer,
     } = this.props;
 
     let { length: count } = this.value();
@@ -612,7 +613,7 @@ export default class TextField extends PureComponent {
     };
 
     return (
-      <View style={[styles.helperContainer, containerStyle, bottomLabelStyle]}>
+      <View style={[styles.helperContainer, containerStyle, bottomLabelStyle, lineContainer]}>
         {!!title || !!error && <Helper {...helperProps} />}
         {!!count && <Counter {...counterProps} />}
         {!!rightTitle && <BottomRightLabel {...bottomRightProps} />}
@@ -666,7 +667,8 @@ export default class TextField extends PureComponent {
       containerStyle,
       inputContainerStyle: inputContainerStyleOverrides,
       lineContainer,
-      outerPrefix
+      outerPrefix,
+      outerContainer
     } = this.props;
 
     let restricted = this.isRestricted();
@@ -733,7 +735,7 @@ export default class TextField extends PureComponent {
 
             <View style={styles.row}>
               <View style={{ flexDirection: 'row' }}>
-                <View style={{ ...lineContainer }}>{outerPrefix}</View>
+                <View style={{ ...outerContainer }}>{outerPrefix}</View>
                 {this.renderAffix('prefix')}
                 {this.renderInput()}
                 {this.renderAffix('suffix')}
