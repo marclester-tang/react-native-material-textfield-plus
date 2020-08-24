@@ -26,6 +26,7 @@ export default class Line extends PureComponent {
     tintColor: PropTypes.string,
     baseColor: PropTypes.string,
     errorColor: PropTypes.string,
+    lineContainer: PropTypes.object,
 
     lineWidth: PropTypes.number,
     activeLineWidth: PropTypes.number,
@@ -95,7 +96,7 @@ export default class Line extends PureComponent {
 
   render() {
     let { maxLineWidth } = this.state;
-    let { disabled, lineType, disabledLineType } = this.props;
+    let { disabled, lineType, disabledLineType, lineContainer } = this.props;
 
     let borderStyle = disabled?
       disabledLineType:
@@ -118,7 +119,7 @@ export default class Line extends PureComponent {
     };
 
     return (
-      <View style={styles.container} pointerEvents='none'>
+      <View style={[styles.container, lineContainer]} pointerEvents='none'>
         <Animated.View style={[styles.line, lineStyle]} />
       </View>
     );

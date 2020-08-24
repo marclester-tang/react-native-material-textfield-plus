@@ -665,6 +665,8 @@ export default class TextField extends PureComponent {
       errorColor,
       containerStyle,
       inputContainerStyle: inputContainerStyleOverrides,
+      lineContainer,
+      outerPrefix
     } = this.props;
 
     let restricted = this.isRestricted();
@@ -717,6 +719,7 @@ export default class TextField extends PureComponent {
 
       lineType,
       disabledLineType,
+      lineContainer,
     };
 
     return (
@@ -729,9 +732,12 @@ export default class TextField extends PureComponent {
             {this.renderLabel(styleProps)}
 
             <View style={styles.row}>
-              {this.renderAffix('prefix')}
-              {this.renderInput()}
-              {this.renderAffix('suffix')}
+              <View style={{ flexDirection: 'row' }}>
+                <View style={{ ...lineContainer }}>{outerPrefix}</View>
+                {this.renderAffix('prefix')}
+                {this.renderInput()}
+                {this.renderAffix('suffix')}
+              </View>
             </View>
           </View>
 
