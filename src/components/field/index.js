@@ -505,11 +505,13 @@ export default class TextField extends PureComponent {
       fontSize,
       labelFontSize,
       labelTextStyle,
+      labelColor,
     } = this.props;
 
     return (
       <Label
         {...props}
+        labelColor={labelColor}
         fontSize={fontSize}
         activeFontSize={labelFontSize}
         offset={offset}
@@ -668,7 +670,8 @@ export default class TextField extends PureComponent {
       inputContainerStyle: inputContainerStyleOverrides,
       lineContainer,
       outerPrefix,
-      outerContainer
+      outerContainer,
+      labelColor,
     } = this.props;
 
     let restricted = this.isRestricted();
@@ -705,6 +708,7 @@ export default class TextField extends PureComponent {
       baseColor,
       tintColor,
       errorColor,
+      labelColor,
 
       contentInset,
 

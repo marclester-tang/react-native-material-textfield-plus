@@ -62,6 +62,7 @@ export default class Label extends PureComponent {
       style,
       focusAnimation,
       labelAnimation,
+      labelColor,
       ...props
     } = this.props;
 
@@ -81,7 +82,7 @@ export default class Label extends PureComponent {
     let textStyle = {
       lineHeight: fontSize,
       fontSize,
-      color,
+      color: labelColor ? labelColor : color,
     };
 
     let { x0, y0, x1, y1 } = offset;
