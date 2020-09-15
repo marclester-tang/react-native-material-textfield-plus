@@ -672,6 +672,7 @@ export default class TextField extends PureComponent {
       outerPrefix,
       outerContainer,
       labelColor,
+      allowFontScaling,
     } = this.props;
 
     let restricted = this.isRestricted();
@@ -709,7 +710,7 @@ export default class TextField extends PureComponent {
       tintColor,
       errorColor,
       labelColor,
-
+      allowFontScaling,
       contentInset,
 
       focusAnimation,
