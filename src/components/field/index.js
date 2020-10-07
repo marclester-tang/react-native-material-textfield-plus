@@ -92,6 +92,9 @@ export default class TextField extends PureComponent {
     tintColor: PropTypes.string,
     textColor: PropTypes.string,
     baseColor: PropTypes.string,
+    lineColor: PropTypes.string,
+    lineTintColor: PropTypes.string,
+    disabledLineColor: PropTypes.string,
 
     label: PropTypes.string,
     title: PropTypes.string,
@@ -661,6 +664,9 @@ export default class TextField extends PureComponent {
       lineType,
       disabledLineType,
       lineWidth,
+      lineColor,
+      lineTintColor,
+      disabledLineColor,
       activeLineWidth,
       disabledLineWidth,
       tintColor,
@@ -721,6 +727,9 @@ export default class TextField extends PureComponent {
       ...styleProps,
 
       lineWidth,
+      lineColor,
+      lineTintColor,
+      disabledLineColor,
       activeLineWidth,
       disabledLineWidth,
 
