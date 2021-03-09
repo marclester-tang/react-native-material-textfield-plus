@@ -70,6 +70,8 @@ export default class Helper extends PureComponent {
       disabled,
       baseColor,
       errorColor,
+      testID,
+      accessibilityLabel,
     } = this.props;
 
     let text = errored?
@@ -89,7 +91,7 @@ export default class Helper extends PureComponent {
     };
 
     return (
-      <Animated.Text style={[styles.text, style, textStyle]}>
+      <Animated.Text style={[styles.text, style, textStyle]} testID={testID} accessibilityLabel={accessibilityLabel}>
         {text}
       </Animated.Text>
     );
