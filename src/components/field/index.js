@@ -126,6 +126,11 @@ export default class TextField extends PureComponent {
     containerStyle: (ViewPropTypes || View.propTypes).style,
     inputContainerStyle: (ViewPropTypes || View.propTypes).style,
     bottomLabelStyle: (ViewPropTypes || View.propTypes).style,
+
+    testIDHelper: PropTypes.string,
+    accessibilityLabelHelper: PropTypes.string,
+    testIDRightText: PropTypes.string,
+    accessibilityLabelRightText: PropTypes.string,
   };
 
   static inputContainerStyle = styles.inputContainer;
@@ -579,6 +584,10 @@ export default class TextField extends PureComponent {
       onPressRightText: onPress,
       bottomLabelStyle,
       lineContainer,
+      testIDHelper,
+      testIDRightText,
+      accessibilityLabelHelper,
+      accessibilityLabelRightText,
     } = this.props;
 
     let { length: count } = this.value();
@@ -608,6 +617,8 @@ export default class TextField extends PureComponent {
       error,
       disabled,
       focusAnimation,
+      testID: testIDHelper,
+      accessibilityLabel: accessibilityLabelHelper,
     };
 
     let bottomRightProps = {
@@ -615,6 +626,8 @@ export default class TextField extends PureComponent {
       onPress,
       title: rightTitle,
       rightTextStyle: { ...style, ...rightTextStyle },
+      testID: testIDRightText,
+      accessibilityLabel: accessibilityLabelRightText,
     };
 
     return (
