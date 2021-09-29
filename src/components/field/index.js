@@ -137,7 +137,7 @@ export default class TextField extends PureComponent {
 
   static contentInset = {
     top: 16,
-    label: 4,
+    label: 8,
     input: 8,
     left: 0,
     right: 0,
