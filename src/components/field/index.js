@@ -136,12 +136,12 @@ export default class TextField extends PureComponent {
   static inputContainerStyle = styles.inputContainer;
 
   static contentInset = {
-    top: 16,
+    top: 8,
     label: 4,
     input: 8,
     left: 0,
     right: 0,
-    bottom: 8,
+    bottom: 4,
   };
 
   static labelOffset = {
